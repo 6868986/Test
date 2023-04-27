@@ -14,17 +14,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.2.RELEASE</version>
-    </parent>
 
     <dependencies>
 <!--        spring-boot-starter-web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>1.5.2.RELEASE</version>
         </dependency>
 <!--        mybatis-->
         <dependency>
@@ -33,15 +29,10 @@
             <version>3.5.13</version>
         </dependency>
 <!--        mafka-->
-<!--        <dependency>-->
-<!--            <groupId>com.meituan.mafka</groupId>-->
-<!--            <artifactId>mafka-client_2.9</artifactId>-->
-<!--            <version>3.4.5</version>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>com.meituan.xframe</groupId>
-            <artifactId>mafka-xframe-boot-starter</artifactId>
-            <version>2.5.0</version>
+            <groupId>com.meituan.mafka</groupId>
+            <artifactId>mafka-client_2.10</artifactId>
+            <version>3.6.9.2</version>
         </dependency>
     </dependencies>
 

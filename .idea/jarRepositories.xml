@@ -17,6 +17,11 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Central Repository" />
+      <option name="url" value="http://maven.offline.sankuai.com/nexus/content/groups/public" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="dianping-internal-releases" />
       <option name="name" value="Mei Tuan internal repository for released artifacts" />
       <option name="url" value="http://mvn.dianpingoa.com/dianping-releases" />
