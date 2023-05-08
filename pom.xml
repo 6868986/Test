@@ -2,6 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>xframe-starter-parent</artifactId>
+        <groupId>com.meituan.xframe</groupId>
+        <version>2.6.3</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
@@ -15,12 +20,33 @@
     </properties>
 
 
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.sankuai</groupId>
+                <artifactId>inf-bom</artifactId>
+                <version>1.9.5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
+
+
     <dependencies>
+<!--        spring-boot-starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
 <!--        spring-boot-starter-web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>1.5.2.RELEASE</version>
         </dependency>
 <!--        mybatis-->
         <dependency>
@@ -34,6 +60,60 @@
             <artifactId>mafka-client_2.10</artifactId>
             <version>3.6.9.2</version>
         </dependency>
+<!--        libthrift-->
+        <dependency>
+            <groupId>org.apache.thrift</groupId>
+            <artifactId>libthrift</artifactId>
+            <version>0.18.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sankuai.dolphin</groupId>
+            <artifactId>thrift-maven-plugin</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.meituan.service</groupId>-->
+<!--            <artifactId>mtthrift-spring-boot-starter</artifactId>-->
+<!--            <version></version>-->
+<!--        </dependency>-->
+<!--        raptor-->
+        <dependency>
+            <groupId>com.dianping.cat</groupId>
+            <artifactId>cat-client</artifactId>
+        </dependency>
+
+
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.sankuai.dolphin</groupId>
+                <artifactId>thrift-maven-plugin</artifactId>
+                <version>1.2.5</version>
+                <executions>
+                    <execution>
+                        <id>generate</id>
+                        <phase>generate-sources</phase>  <!-- 根据IDL文件生成Java代码 -->
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <appkey>com.sankuai.inf.mtthrift.testServer </appkey>     <!-- 这里替换成项目的appkey -->
+                    <codeDir>${project.basedir}/target/generated-sources/java</codeDir>   <!-- 生成代码目标路径。多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 -->
+                    <thriftVersion>0.9.3</thriftVersion>			<!--Thrift编译器版本，需要与项目依赖的libthrift版本一致，否则可能不兼容，也可以依赖美团优化版libthrift，解决兼容问题。可以不填写，默认0.8.0 -->
+                    <language>java</language>			<!--目标语言。可以不填写。默认java-->
+                    <idlDir>${project.basedir}/src/main/thrift</idlDir>		<!-- idl文件所在路径。可以不填写。默认src/main/resources/thrift。 多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 -->
+                    <compatible>false</compatible> 		 <!-- 参考 3.1. 兼容模式与非兼容模式 ，除非之前使用了genthrift插件的项目，否则推荐设置为false -->
+                    <supportClasspath>false</supportClasspath>  <!-- 扫描类路径中的Thrift文件，默认关闭，建议需要时再开启 -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
 </project>

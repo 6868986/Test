@@ -1,5 +1,10 @@
-/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/MafkaStudy/Consumer.java
+/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/Mafka/Producer.java
 /Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Main.java
 /Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/LambdaStudy.java
-/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/MafkaStudy/Producer.java
+/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Config/ThriftConfiguration.java
+/Users/liushixing/IdeaProjects/Test/target/generated-sources/java/com/meituan/sample/Request.java
+/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/RPCThrift/HelloService.java
+/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/Raptor/Catclient.java
+/Users/liushixing/IdeaProjects/Test/target/generated-sources/java/com/meituan/sample/HelloService.java
 /Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Controller/Demo.java
+/Users/liushixing/IdeaProjects/Test/src/main/java/org/example/Study/Mafka/Consumer.java
