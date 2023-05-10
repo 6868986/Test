@@ -60,17 +60,21 @@
             <artifactId>mafka-client_2.10</artifactId>
             <version>3.6.9.2</version>
         </dependency>
-<!--        libthrift-->
+<!--        thrift-->
         <dependency>
             <groupId>org.apache.thrift</groupId>
             <artifactId>libthrift</artifactId>
             <version>0.18.1</version>
         </dependency>
         <dependency>
-            <groupId>com.sankuai.dolphin</groupId>
-            <artifactId>thrift-maven-plugin</artifactId>
-            <version>1.2.5</version>
+            <groupId>com.meituan.service.mobile</groupId>
+            <artifactId>mtthrift</artifactId>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.sankuai.dolphin</groupId>-->
+<!--            <artifactId>thrift-maven-plugin</artifactId>-->
+<!--            <version>1.2.5</version>-->
+<!--        </dependency>-->
 <!--        <dependency>-->
 <!--            <groupId>com.meituan.service</groupId>-->
 <!--            <artifactId>mtthrift-spring-boot-starter</artifactId>-->
@@ -81,39 +85,54 @@
             <groupId>com.dianping.cat</groupId>
             <artifactId>cat-client</artifactId>
         </dependency>
-
+<!--        slf4j-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>2.20.0</version>
+        </dependency>
 
     </dependencies>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.sankuai.dolphin</groupId>
-                <artifactId>thrift-maven-plugin</artifactId>
-                <version>1.2.5</version>
-                <executions>
-                    <execution>
-                        <id>generate</id>
-                        <phase>generate-sources</phase>  <!-- 根据IDL文件生成Java代码 -->
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <!--suppress UnresolvedMavenProperty -->
-                    <appkey>com.sankuai.inf.mtthrift.testServer </appkey>     <!-- 这里替换成项目的appkey -->
-                    <codeDir>${project.basedir}/target/generated-sources/java</codeDir>   <!-- 生成代码目标路径。多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 -->
-                    <thriftVersion>0.9.3</thriftVersion>			<!--Thrift编译器版本，需要与项目依赖的libthrift版本一致，否则可能不兼容，也可以依赖美团优化版libthrift，解决兼容问题。可以不填写，默认0.8.0 -->
-                    <language>java</language>			<!--目标语言。可以不填写。默认java-->
-                    <idlDir>${project.basedir}/src/main/thrift</idlDir>		<!-- idl文件所在路径。可以不填写。默认src/main/resources/thrift。 多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 -->
-                    <compatible>false</compatible> 		 <!-- 参考 3.1. 兼容模式与非兼容模式 ，除非之前使用了genthrift插件的项目，否则推荐设置为false -->
-                    <supportClasspath>false</supportClasspath>  <!-- 扫描类路径中的Thrift文件，默认关闭，建议需要时再开启 -->
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>com.sankuai.dolphin</groupId>-->
+<!--                <artifactId>thrift-maven-plugin</artifactId>-->
+<!--                <version>1.2.5</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>generate</id>-->
+<!--                        <phase>generate-sources</phase>  &lt;!&ndash; 根据IDL文件生成Java代码 &ndash;&gt;-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash;suppress UnresolvedMavenProperty &ndash;&gt;-->
+<!--                    <appkey>com.sankuai.inf.mtthrift.testServer </appkey>     &lt;!&ndash; 这里替换成项目的appkey &ndash;&gt;-->
+<!--                    <codeDir>${project.basedir}/target/generated-sources/java</codeDir>   &lt;!&ndash; 生成代码目标路径。多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 &ndash;&gt;-->
+<!--                    <thriftVersion>0.9.3</thriftVersion>			&lt;!&ndash;Thrift编译器版本，需要与项目依赖的libthrift版本一致，否则可能不兼容，也可以依赖美团优化版libthrift，解决兼容问题。可以不填写，默认0.8.0 &ndash;&gt;-->
+<!--                    <language>java</language>			&lt;!&ndash;目标语言。可以不填写。默认java&ndash;&gt;-->
+<!--                    <idlDir>${project.basedir}/src/main/thrift</idlDir>		&lt;!&ndash; idl文件所在路径。可以不填写。默认src/main/resources/thrift。 多模块项目请务必保留 ${project.basedir}，否则可能导致编译失败 &ndash;&gt;-->
+<!--                    <compatible>false</compatible> 		 &lt;!&ndash; 参考 3.1. 兼容模式与非兼容模式 ，除非之前使用了genthrift插件的项目，否则推荐设置为false &ndash;&gt;-->
+<!--                    <supportClasspath>false</supportClasspath>  &lt;!&ndash; 扫描类路径中的Thrift文件，默认关闭，建议需要时再开启 &ndash;&gt;-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 
 </project>

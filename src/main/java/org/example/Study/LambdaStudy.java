@@ -5,8 +5,6 @@
 package org.example.Study;
 
 import com.google.common.collect.Lists;
-import scala.actors.threadpool.Arrays;
-import scala.util.parsing.combinator.testing.Str;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +54,7 @@ public class LambdaStudy {
          * reduce() 方法：对流进行规约操作并返回其值
          */
         List<Integer> list = Lists.newArrayList(1,2,3,4,5);
-        int sum = list.stream().reduce(1,(a,b) -> (a + b));
+        int sum = list.stream().reduce(0,(a,b) -> (a + b));
         System.out.println(sum);
     }
 
