@@ -2,12 +2,12 @@
  * meituan.com Inc.
  * Copyright (c) 2010-2023 All Rights Reserved.
  */
-package org.example.Study.RPCThrift.server;
+package org.example.Study.MTthrift.server;
 
 import org.apache.thrift.TException;
-import org.example.Study.RPCThrift.sdk.DemoThriftService;
-import org.example.Study.RPCThrift.sdk.request.ThriftRequest;
-import org.example.Study.RPCThrift.sdk.response.ThriftResponse;
+import org.example.Study.MTthrift.sdk.DemoThriftService;
+import org.example.Study.MTthrift.sdk.request.ThriftRequest;
+import org.example.Study.MTthrift.sdk.response.ThriftResponse;
 import org.springframework.stereotype.Service;
 
 /**

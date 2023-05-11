@@ -45,6 +45,7 @@ public class LambdaStudy {
         List<Integer> squares = numbers.stream().map(x -> x * x).collect(Collectors.toList());
 
         /**
+         *
          * filter() 方法：从流中过滤出符合条件的元素
          */
         List<String> names = Lists.newArrayList("Java","Javascript","C++");
