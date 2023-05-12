@@ -42,7 +42,7 @@ public class MafkaConfig {
         return consumer;
     }
 
-    @Bean(name = "workProducer")
+    @Bean(name = "messageProducer")
     public MafkaProducer workProducer(){
         MafkaProducer producer = new MafkaProducer();
         producer.setNamespace("waimai");
