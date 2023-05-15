@@ -54,7 +54,7 @@
 
     4. 故障转移Failover
 
-      - Epoch：Redis Cluster 使用了类似于 ***Raft*** 算法 ***term***（任期）的概念称为 ***epoch***（纪元），用来给事件增加版本号。Redis 集群中的纪元主要是两种：***currentEpoch*** 和 ***configEpoch***。
+    - Epoch：Redis Cluster 使用了类似于 ***Raft*** 算法 ***term***（任期）的概念称为 ***epoch***（纪元），用来给事件增加版本号。Redis 集群中的纪元主要是两种：***currentEpoch*** 和 ***configEpoch***。
 
         1. currentEpoch:记录集群状态变更的递增版本号
 
@@ -70,32 +70,32 @@
 
            这就是 ***configEpoch*** 起作用的时候了，C 在 B 发来的包中，发现它的 ***configEpoch***，要比 A 的大，说明 B 是更新的配置。因此，就将 ***slot 1*** 的负责节点设置为 B（server.cluster->slots[1] = B）。在 ***slave*** 发起选举，获得足够多的选票之后，成功当选时，也就是 ***slave*** 试图替代其已经下线的旧 ***master***，成为新的 ***master*** 时，会增加它自己的 ***configEpoch***，使其成为当前所有集群节点的 ***configEpoch*** 中的最大值。这样，该 ***slave*** 成为 ***master*** 后，就会向所有节点发送广播包，强制其他节点更新相关 ***slots*** 的负责节点为自己。
 
-      - 自动Failover
+    - 自动Failover
 
-          - 当一个 ***slave*** 发现自己正在复制的 ***master*** 进入了已下线（***FAIL***）状态时，***slave*** 将开始对已下线状态的 ***master*** 进行故障转移，以下是故障转移执行的步骤
-          - 该下线的 ***master*** 下所有 ***slave*** 中，会有一个 ***slave*** 被选中。具体的选举流程为：slave 自增它的 ***currentEpoch*** 值，然后向其他 ***masters*** 请求投票，每个 ***slave*** 都向集群其他节点广播一条 CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST 消息用于拉票，集群中具有投票权的 ***master*** 收到消息后，如果在当前选举纪元中没有投过票，就会向第一个发送来消息的 ***slave*** 返回 CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK 消息，表示投票给该 ***slave***。某个 ***slave*** 如果在一段时间内收到了大部分 ***master*** 的投票，则表示选举成功。
-          - 被选中的 ***slave*** 会执行 SLAVEOF no one 命令，成为新的 ***master***
-          - 新的 ***master*** 会撤销所有对已下线 ***master*** 的 ***slot*** 指派，并将这些 ***slot*** 全部指派给自己
-          - 新的 ***master*** 向集群广播一条 ***PONG*** 消息，这条 ***PONG*** 消息可以让集群中的其他节点立即知道自己已经由 ***slave*** 变成了 ***master*** ，并且这个 ***master*** 已经接管了原本由已下线节点负责处理的 ***slot***
-          - 新的 ***master*** 开始接收和自己负责处理的 ***slot*** 有关的命令请求，故障转移完成
+        - 当一个 ***slave*** 发现自己正在复制的 ***master*** 进入了已下线（***FAIL***）状态时，***slave*** 将开始对已下线状态的 ***master*** 进行故障转移，以下是故障转移执行的步骤
+        - 该下线的 ***master*** 下所有 ***slave*** 中，会有一个 ***slave*** 被选中。具体的选举流程为：slave 自增它的 ***currentEpoch*** 值，然后向其他 ***masters*** 请求投票，每个 ***slave*** 都向集群其他节点广播一条 CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST 消息用于拉票，集群中具有投票权的 ***master*** 收到消息后，如果在当前选举纪元中没有投过票，就会向第一个发送来消息的 ***slave*** 返回 CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK 消息，表示投票给该 ***slave***。某个 ***slave*** 如果在一段时间内收到了大部分 ***master*** 的投票，则表示选举成功。
+        - 被选中的 ***slave*** 会执行 SLAVEOF no one 命令，成为新的 ***master***
+        - 新的 ***master*** 会撤销所有对已下线 ***master*** 的 ***slot*** 指派，并将这些 ***slot*** 全部指派给自己
+        - 新的 ***master*** 向集群广播一条 ***PONG*** 消息，这条 ***PONG*** 消息可以让集群中的其他节点立即知道自己已经由 ***slave*** 变成了 ***master*** ，并且这个 ***master*** 已经接管了原本由已下线节点负责处理的 ***slot***
+        - 新的 ***master*** 开始接收和自己负责处理的 ***slot*** 有关的命令请求，故障转移完成
 
-      - 手动Failover
+    - 手动Failover
 
-        Redis 集群支持手动故障转移，也就是向 ***slave*** 发送 CLUSTER FAILOVER 命令，使其在 master 未下线的情况下，发起故障转移流程，升级为新的 ***master*** ，而原来的 ***master*** 降级为 ***slave***。
+      Redis 集群支持手动故障转移，也就是向 ***slave*** 发送 CLUSTER FAILOVER 命令，使其在 master 未下线的情况下，发起故障转移流程，升级为新的 ***master*** ，而原来的 ***master*** 降级为 ***slave***。
 
-        为了不丢失数据，向 ***slave*** 发送 CLUSTER FAILOVER 命令后，流程如下：
+      为了不丢失数据，向 ***slave*** 发送 CLUSTER FAILOVER 命令后，流程如下：
 
-        1. ***slave*** 收到命令后，向 ***master*** 发送 CLUSTERMSG_TYPE_MFSTART 命令
-        2. ***master*** 收到该命令后，会将其所有客户端置于阻塞状态，也就是在 10s 的时间内，不再处理客户端发来的命令，并且在其发送的心跳包中，会带有 CLUSTERMSG_FLAG0_PAUSED 标记
-        3. ***slave*** 收到 ***master*** 发来的，带 CLUSTERMSG_FLAG0_PAUSED 标记的心跳包后，从中获取 ***master*** 当前的复制偏移量，***slave*** 等到自己的复制偏移量达到该值后，才会开始执行故障转移流程：发起选举、统计选票、赢得选举、升级为 ***master*** 并更新配置
+      1. ***slave*** 收到命令后，向 ***master*** 发送 CLUSTERMSG_TYPE_MFSTART 命令
+      2. ***master*** 收到该命令后，会将其所有客户端置于阻塞状态，也就是在 10s 的时间内，不再处理客户端发来的命令，并且在其发送的心跳包中，会带有 CLUSTERMSG_FLAG0_PAUSED 标记
+      3. ***slave*** 收到 ***master*** 发来的，带 CLUSTERMSG_FLAG0_PAUSED 标记的心跳包后，从中获取 ***master*** 当前的复制偏移量，***slave*** 等到自己的复制偏移量达到该值后，才会开始执行故障转移流程：发起选举、统计选票、赢得选举、升级为 ***master*** 并更新配置
 
-        CLUSTER FAILOVER 命令支持两个选项：***FORCE*** 和 ***TAKEOVER***。使用这两个选项，可以改变上述的流程。
+      CLUSTER FAILOVER 命令支持两个选项：***FORCE*** 和 ***TAKEOVER***。使用这两个选项，可以改变上述的流程。
 
-        如果有 ***FORCE*** 选项，则 ***slave*** 不会与 ***master*** 进行交互，***master*** 也不会阻塞其客户端，而是 ***slave*** 立即开始故障转移流程：发起选举、统计选票、赢得选举、升级为 ***master*** 并更新配置。
+      如果有 ***FORCE*** 选项，则 ***slave*** 不会与 ***master*** 进行交互，***master*** 也不会阻塞其客户端，而是 ***slave*** 立即开始故障转移流程：发起选举、统计选票、赢得选举、升级为 ***master*** 并更新配置。
 
-        如果有 ***TAKEOVER*** 选项，则更加简单直接，***slave*** 不再发起选举，而是直接将自己升级为 ***master*** ，接手原 ***master*** 的 ***slot***，增加自己的 ***configEpoch*** 后更新配置。
+      如果有 ***TAKEOVER*** 选项，则更加简单直接，***slave*** 不再发起选举，而是直接将自己升级为 ***master*** ，接手原 ***master*** 的 ***slot***，增加自己的 ***configEpoch*** 后更新配置。
 
-        因此，使用 ***FORCE*** 和 ***TAKEOVER*** 选项，***master*** 可以已经下线；而不使用任何选项，只发送 CLUSTER FAILOVER 命令的话，***master*** 必须在线。
+      因此，使用 ***FORCE*** 和 ***TAKEOVER*** 选项，***master*** 可以已经下线；而不使用任何选项，只发送 CLUSTER FAILOVER 命令的话，***master*** 必须在线。
 
     5. Redis集群中的消息
 
