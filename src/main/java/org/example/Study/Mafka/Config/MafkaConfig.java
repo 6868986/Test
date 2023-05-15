@@ -5,8 +5,11 @@
 package org.example.Study.Mafka.Config;
 
 import com.meituan.mafka.client.MafkaClient;
+import com.meituan.mafka.client.bean.MafkaProducer;
 import com.meituan.mafka.client.consumer.ConsumerConstants;
 import com.meituan.mafka.client.consumer.IConsumerProcessor;
+import com.meituan.mafka.client.producer.IProducerProcessor;
+import com.meituan.mafka.client.producer.ProducerConstants;
 import org.example.Study.Mafka.Listener.WorkListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,5 +40,14 @@ public class MafkaConfig {
         IConsumerProcessor consumer = MafkaClient.buildConsumerFactory(properties,"topic");
         consumer.recvMessageWithParallel(String.class,workListener);
         return consumer;
+    }
+
+    @Bean(name = "messageProducer")
+    public MafkaProducer workProducer(){
+        MafkaProducer producer = new MafkaProducer();
+        producer.setNamespace("waimai");
+        producer.setAppkey("com.sankuai.health.merchant.pricing");
+        producer.setTopic("topic");
+        return producer;
     }
 }
