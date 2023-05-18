@@ -129,6 +129,43 @@ kafka是最初由Linkedin公司开发，由Scala和Java编写，Kafka是一个�
 
 #### Kafka Producer
 
+生产者提供了同步和异步两种发送接口
+
+1. ```java
+   try{
+       //Mafka同步发送
+       ProducerResult producerResult = producer.sendMessage("这是第" + i + "条消息");
+   
+       //Mafka异步发送
+       String message = "这是第" + i + "条消息";
+       ProducerResult producerResult1 = producer.sendAsyncMessage(message,
+           new FutureCallback() {
+               @Override
+               public void onSuccess(AsyncProducerResult asyncProducerResult) {
+                   System.out.println("发送成功" + message);
+               }
+   
+               @Override
+               public void onFailure(Throwable throwable) {
+                   System.out.println("发送失败" + message);
+               }
+            }
+        );
+   } catch (Exception e) {
+       throw new RuntimeException(e);
+   }
+   ```
+
+   ​		当produer调用send方法，发送消息的时候，只是先把消息缓存到一个队列，由该模式的消费者（另一个线程）来执行真正的发送逻辑。这样主要是为了发送的时候尽量是批次的消息发送，而非单条单条消息的发送，用来提升发送性能。
+
+   ​		sender是在一个异步线程（ioThread）中执行主要逻辑，不停的从accumulator消息累加器中获取准备发送的消息批次并通过网络发送到目标broker上，基本流程如下：
+
+   ![img](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d1de3174ef044d0cb77e04c90da20a64~tplv-k3u1fbpfcp-zoom-in-crop-mark:4536:0:0:0.awebp)
+
+2. kafka生产者会将消息封装成一个 ProducerRecord ，再向 kafka集群中的某个 topic 发送消息
+
+3. ProducerRecord => send()方法 => 序列化器 => 分区器 => 
+
 #### Kafka Consumer
 
 #### Kafka Broker
