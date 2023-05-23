@@ -22,8 +22,9 @@ import java.net.Socket;
  */
 public class ProviderServer {
 
-    @Resource
-    HelloService helloService;
+//    @Resource
+//    HelloService helloService;
+    HelloService helloService = new HelloServiceImpl();
 
     public static void main(String[] args) throws IOException {
         new ProviderServer().run();

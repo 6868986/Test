@@ -21,6 +21,7 @@ import java.util.List;
  * @author liushixing@meituan.com
  * @date 2023/5/19 15:19
  */
+
 public class RemoteServiceImplProxy implements HelloService {
 
     public static final int PORT = 9090;
@@ -67,6 +68,7 @@ public class RemoteServiceImplProxy implements HelloService {
             return res;
         } catch (Exception e){
             //log.error("fail",e);
+            System.out.println(e);
             throw new RuntimeException();
         }
     }
