@@ -2,7 +2,7 @@
  * meituan.com Inc.
  * Copyright (c) 2010-2023 All Rights Reserved.
  */
-package org.example.Study.Mafka;
+package org.example.Study.Kafka;
 
 import com.meituan.mafka.client.MafkaClient;
 import com.meituan.mafka.client.consumer.ConsumeStatus;
@@ -15,10 +15,6 @@ import com.meituan.mafka.client.message.MessagetContext;
 import java.util.Properties;
 
 /**
- * <p>
- *
- * </p>
- *
  * @author liushixing@meituan.com
  * @date 2023/4/26 15:59
  */

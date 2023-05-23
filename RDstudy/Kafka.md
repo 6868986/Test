@@ -166,6 +166,16 @@ kafka是最初由Linkedin公司开发，由Scala和Java编写，Kafka是一个�
 
 3. ProducerRecord => send()方法 => 序列化器 => 分区器 => 
 
+4. kafka 为了提升效率，生产者发送消息时批量的，采用的是生产者消费者线程模型，在客户端每个分区一个队列，获取到分区后，每个消息放到所属分区对应队列的批记录中，kafka 的记录收集器（RecordAccumulator） 负责生产者客户端生产的消息，发送线程（Sender）负责读取记录收集器的批量消息，通过网络发送给服务端，当批记录满时，sender线程从记录收集器获取批记录是按Broker 分组的，发送线程轮询，按Broker 发送批记录。
+
+   ![截屏2023-05-18 15.47.40](/Users/liushixing/Desktop/截屏2023-05-18 15.47.40.png)
+
+   ​		以Batch的方式推送数据可以极大的提高处理效率，kafka Producer 可以将消息在内存中累计到一定数量后作为一个batch发送请求。Batch的数量大小可以通过Producer的参数控制，参数值可以设置为累计的消息的数量（如500条）、累计的时间间隔（如100ms）或者累计的数据大小(64KB)。通过增加batch的大小，可以减少网络请求和磁盘IO的次数，当然具体参数设置需要在效率和时效性方面做一个权衡。
+
+   ​		Producers可以异步并行的向kafka发送消息，但是通常producer在发送完消息之后会得到一个future响应，返回的是offset值或者发送过程中遇到的错误。这其中有个非常重要的参数“acks”,这个参数决定了producer要求leader partition 收到确认的副本个数。
+
+5. 
+
 #### Kafka Consumer
 
 #### Kafka Broker

@@ -2,15 +2,13 @@
  * meituan.com Inc.
  * Copyright (c) 2010-2023 All Rights Reserved.
  */
-package org.example.Study.Mafka.Config;
+package org.example.Study.Kafka.Config;
 
 import com.meituan.mafka.client.MafkaClient;
 import com.meituan.mafka.client.bean.MafkaProducer;
 import com.meituan.mafka.client.consumer.ConsumerConstants;
 import com.meituan.mafka.client.consumer.IConsumerProcessor;
-import com.meituan.mafka.client.producer.IProducerProcessor;
-import com.meituan.mafka.client.producer.ProducerConstants;
-import org.example.Study.Mafka.Listener.WorkListener;
+import org.example.Study.Kafka.Listener.WorkListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,16 +27,16 @@ import java.util.Properties;
 public class MafkaConfig {
 
     @Resource
-    private WorkListener workListener;
+    WorkListener workListener;
 
     @Bean(name = "workConsumer")
     public IConsumerProcessor workConsumer() throws Exception {
         Properties properties = new Properties();
-        properties.setProperty(ConsumerConstants.MafkaBGNamespace,"waimai");
-        properties.setProperty(ConsumerConstants.MafkaClientAppkey,"com.sankuai.health.merchant.pricing");
-        properties.setProperty(ConsumerConstants.SubscribeGroup,"consumerGroup");
-        IConsumerProcessor consumer = MafkaClient.buildConsumerFactory(properties,"topic");
-        consumer.recvMessageWithParallel(String.class,workListener);
+        properties.setProperty(ConsumerConstants.MafkaBGNamespace, "waimai");
+        properties.setProperty(ConsumerConstants.MafkaClientAppkey, "com.sankuai.health.merchant.pricing");
+        properties.setProperty(ConsumerConstants.SubscribeGroup, "workflow.to.health.pricing.consumer");
+        IConsumerProcessor consumer = MafkaClient.buildConsumerFactory(properties, "com.sankuai.healthm.workflow.process.compete.event");
+        consumer.recvMessageWithParallel(String.class, workListener);
         return consumer;
     }
 
@@ -50,4 +48,5 @@ public class MafkaConfig {
         producer.setTopic("topic");
         return producer;
     }
+
 }

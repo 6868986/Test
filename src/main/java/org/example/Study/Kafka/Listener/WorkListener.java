@@ -2,7 +2,7 @@
  * meituan.com Inc.
  * Copyright (c) 2010-2023 All Rights Reserved.
  */
-package org.example.Study.Mafka.Listener;
+package org.example.Study.Kafka.Listener;
 
 import com.meituan.mafka.client.consumer.ConsumeStatus;
 import com.meituan.mafka.client.consumer.IMessageListener;
