@@ -115,13 +115,31 @@
 
            1. 客户端在zookeeper发起读请求，传入watcher对象，注册回调函数
 
-           2. 读请求是读DataTree上某个znode的数据，自然也就是watch这个znode
+           2. 读请求是读DataTree上某个路径下的znode的数据，自然也就是watch这个znode
+
+              ***疑问：***或者读某个路径？然后watch路径下面的增、删、改？
+
+              ***补充：***watch的是什么？
+
+              - znode数据的更改
+              - znode子节点的更改
+              - znode自身的创建和删除
+
            3. zookeeper收到对该znode的写请求，触发回调函数
+
            4. WatchManager通知客户端
 
-        3. 
+        3. zookeeper的watch是一个***一次性触发器***，client收到一次通知后必须再次设置另一个watch，这样才能知道未来的变化
+
+           这样带来一个***问题***：client珊珊本来watch了一个znode星星，然后znode星星的数据被修改，然后zookeeper服务端发给client珊珊一个通知，然后珊珊还想watch星星，于是就需要对znode星星重新设置一个watch，那如果在收到通知之后&&设置新watch之前，其他client对znode星星进行了更改，那珊珊就感知不到了，从而丢失这次znode的变化
+
+        4. 
 
       - zookeeper会话
+
+        1. client与zk之间的连接本质上是一个***TCP长连接***；会话的生命周期随着连接的建立而开始，之后的request、response以及心跳机制都是通过会话实现的
+        2. zk默认端口：2181
+        3. 
 
       - zookeeper事务
 

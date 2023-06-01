@@ -260,6 +260,18 @@
 
   https://sematext.com/blog/java-garbage-collection/
 
+- WAR包与JAR包
+
+  JAR包和WAR包都是Java中的打包格式，用于将Java程序打包成一个可执行的文件，但它们的应用场景和打包方式有所不同。
+
+  JAR包是Java Archive的缩写，是一种用于打包Java类文件、资源文件和元数据的文件格式。JAR包通常用于打包Java库或Java应用程序，可以包含多个Java类文件和资源文件，可以被其他Java程序引用和调用。JAR包可以通过Java虚拟机（JVM）直接运行，也可以被打包成可执行的JAR文件，通过命令行或双击运行。
+
+  WAR包是Web Application Archive的缩写，是一种用于打包Web应用程序的文件格式。WAR包通常包含了Web应用程序的所有文件，包括Java类文件、JSP文件、HTML文件、CSS文件、JavaScript文件、配置文件等。WAR包可以被部署到Web服务器上，通过Web服务器提供的Servlet容器（如Tomcat、Jetty等）来运行Web应用程序。
+
+  JAR包和WAR包的主要区别在于应用场景和打包方式。JAR包主要用于打包Java库或Java应用程序，可以被其他Java程序引用和调用；而WAR包主要用于打包Web应用程序，可以被部署到Web服务器上运行。此外，JAR包和WAR包的打包方式也有所不同，JAR包通常使用Maven或Ant等构建工具进行打包，而WAR包通常使用Web应用程序打包工具（如Eclipse、IntelliJ IDEA等）进行打包。
+
+- 商家供给侧
+
 - 
 
 - 1. - |                           知识领域                           | 题目                                                         | 考察能力项 | 难度 | 标准答案                                                     | 提供者 |
